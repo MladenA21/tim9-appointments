@@ -1,0 +1,244 @@
+openapi: 3.0.3
+info:
+  title: 'Тим 9 Управување на ИКТ проекти'
+  description: 'Basic prototype API documentation for our reservations system.'
+  version: 1.0.0
+servers:
+  -
+    url: 'https://tim9.smetkovodstvo.com'
+paths:
+  /api/logout:
+    post:
+      summary: Logout
+      operationId: logout
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Authentication
+      security: []
+  /api/session:
+    get:
+      summary: 'Active user session'
+      operationId: activeUserSession
+      description: 'This endpoint returns the active users/organizations info.'
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Authentication
+  /api/login:
+    post:
+      summary: Login
+      operationId: login
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: tromp.janelle@example.org
+                password:
+                  type: string
+                  description: ''
+                  example: f.nk-J/Uma0T7LEYR;W
+              required:
+                - email
+                - password
+      security: []
+  /api/register:
+    post:
+      summary: Register
+      operationId: register
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                days:
+                  type: string
+                  description: ''
+                  example: odio
+              required:
+                - days
+      security: []
+  '/api/organization/{id}/days-and-time':
+    get:
+      summary: 'Get allowed days and work hours for booking for specific organization'
+      operationId: getAllowedDaysAndWorkHoursForBookingForSpecificOrganization
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Reservations
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the organization.'
+        example: est
+        required: true
+        schema:
+          type: string
+  '/api/organization/{id}/reservations':
+    get:
+      summary: 'Get all the reservations from the requested organization'
+      operationId: getAllTheReservationsFromTheRequestedOrganization
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Reservations
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the organization.'
+        example: quidem
+        required: true
+        schema:
+          type: string
+  '/api/organization/{id}/reservations/{reservation_id}':
+    delete:
+      summary: 'Delete the reservation'
+      operationId: deleteTheReservation
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Reservations
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the organization.'
+        example: nesciunt
+        required: true
+        schema:
+          type: string
+      -
+        in: path
+        name: reservation_id
+        description: 'The ID of the reservation.'
+        example: eligendi
+        required: true
+        schema:
+          type: string
+  /api/reserve:
+    post:
+      summary: 'Make a reservation'
+      operationId: makeAReservation
+      description: "This route has an extra layer of validation.\n1. Validates if the date is in the future.\n2. Validates if the datetime passed is in coordination with the days and work hours provided from the organization."
+      parameters: []
+      responses: {  }
+      tags:
+        - Reservations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                organization:
+                  type: string
+                  description: ''
+                  example: distinctio
+                dateTime:
+                  type: string
+                  description: 'Must be a valid date.'
+                  example: '2024-05-02T22:53:39'
+              required:
+                - organization
+                - dateTime
+  /api/organizations:
+    get:
+      summary: 'Get all organizations'
+      operationId: getAllOrganizations
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Users/Organizations
+tags:
+  -
+    name: Authentication
+    description: ''
+  -
+    name: Reservations
+    description: ''
+  -
+    name: Users/Organizations
+    description: ''
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: '<aside>***Important**** <br> Insertion of this Bearer token is done by our backend. When submitting a request the cookie is automatically attached to the request as a bearer token.</aside>'
+security:
+  -
+    default: []

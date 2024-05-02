@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('type');
             $table->string('role')->default('user');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->unsignedInteger('time_from')->nullable();
+            $table->unsignedInteger('time_to')->nullable();
+            $table->json('days')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

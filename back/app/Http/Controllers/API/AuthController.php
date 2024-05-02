@@ -4,22 +4,32 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AuthRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 
+/**
+ * @group Authentication
+ */
 class AuthController extends Controller
 {
     /**
-     * Register api
+     * Active user session
      *
-     * @return \Illuminate\Http\Response
+     * This endpoint returns the active users/organizations info.
+     * @authenticated
      */
     public function session()
     {
-        return response()->json(User::find(auth()->user()->id), 200);
+        $user = User::find(auth()->user()->id)->toArray();
+        return response()->json([...$user , 'days' => json_decode($user['days'])], 200);
     }
 
+
+    /**
+     * Logout
+     */
     public function logout()
     {
         $user = User::find(Auth::user()->id);
@@ -29,15 +39,14 @@ class AuthController extends Controller
         ->withCookie(Cookie::forget('auth_token'));
     }
 
-
-    public function register(Request $request)
+    /**
+     * Register
+     */
+    public function register(AuthRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed',
-        ]);
+        $data = $request->validated();
 
+        $data['days'] = json_encode($data['days']);
         $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
         $success['token'] =  $user->createToken('auth_token')->plainTextToken;
@@ -47,12 +56,17 @@ class AuthController extends Controller
     }
 
     /**
-     * Login api
+     * Login
      *
      * @return \Illuminate\Http\Response
      */
     public function login(Request $request)
     {
+        $data = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string'
+        ]);
+
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = User::find(Auth::user()->id);
             $token = $user->createToken('auth_token')->plainTextToken;
