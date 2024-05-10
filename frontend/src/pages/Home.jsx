@@ -1,16 +1,36 @@
 import logo from "../assets/logo.png";
-import orgTerm from "./orgTerm"
 import React from "react";
+import Repository from "../repository/Repository";
+import { useEffect } from "react";
+import { useState } from "react";
+import axios from "axios";
+import Cookies from 'js-cookie';
 
+const Home = () => {
+    const [organizations, setOrganizations] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-const Home = (props) => {
-    //
-    // constructor(props) {
-    //     super(props);
-    // }
-    //
-    // render() {
-    //     const organizations = this.getOrganizations();
+    useEffect(() => {
+        const token = Cookies.get('token');
+        axios.get('https://tim9.smetkovodstvo.com/api/organizations', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((response) => {
+                console.log("Data:", response.data);
+                setOrganizations(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.error("Error fetching organizations:", error);
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
         return (
             <div>
@@ -35,34 +55,21 @@ const Home = (props) => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {props.organizations.map((term) => {
+                                {organizations.map((term) => {
                                     return (
-                                        <tr>
+                                        <tr key={term.id}>
                                             <td>{term.name}</td>
                                         </tr>
                                     );
                                 })}
                                 </tbody>
                             </table>
-
                         </div>
-
                     </div>
-
                 </div>
             </div>
         );
     }
-
-
-    // getOrganizations = () => {
-    //     return this.props.organizations.map((term) => {
-    //         return (
-    //             <orgTerm term={term}/>
-    //         );
-    //     });
-    // }
-// }
 
 
 export default Home;

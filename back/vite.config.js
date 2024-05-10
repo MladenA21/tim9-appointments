@@ -8,4 +8,12 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        proxy: {
+            '/api': {
+                target: 'https://tim9.smetkovodstvo.com',
+                changeOrigin: true,
+            }
+        }
+    }
 });
