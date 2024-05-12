@@ -1,44 +1,45 @@
-import {BrowserRouter, Route, Routes} from "react-router-dom"
+import { useContext } from "react";
+
+import { Route, Routes } from "react-router-dom"
+
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Reservation from "./pages/Reservation";
 import AddReservation from "./pages/AddReservation";
-import Repository from "./repository/Repository";
-import {Component} from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import axios from "axios";
-import Cookies from 'js-cookie';
+import { AuthContext } from "./context/auth-context";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-
-    const [authenticated, setAuthenticated] = useState(false);
-
-    useEffect(() => {
-        axios.post('/api/login', {
-            email: "org@tim9.co",
-            password: "asdasd123"
-        }).then((res) => {
-            console.log(res);
-            // Cookies.set('token', res.data.token, { expires: 1 });
-            setAuthenticated(true);
-        }).catch((error) => {
-            console.error('Error:', error);
-        });
-    }, []);
+    const auth = useContext(AuthContext);
 
     return (
-        <Routes>
-            {authenticated ? (
-                <Route path="/" element={<Home />} />
-            ) : (
-                <Route path="/login" element={<Login />} />
-            )}
-            <Route path="/register" element={<Register />} />
-            <Route path="/reservation" element={<Reservation />} />
-            <Route path="/reserve" element={<AddReservation />} />
-        </Routes>
+        <>
+            <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
+            <Routes>
+                {auth.isLoggedIn ? (
+                    <Route path="/" element={<Home />} />
+                ) : (
+                    <>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                    </>
+                )}
+                <Route path="/reservation" element={<Reservation />} />
+                <Route path="/reserve" element={<AddReservation />} />
+            </Routes>
+        </>
     );
 
 }

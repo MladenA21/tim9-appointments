@@ -1,18 +1,29 @@
+import { useContext, useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
+
 import logo from "../assets/logo.png";
-import React from "react";
-import Repository from "../repository/Repository";
-import { useEffect } from "react";
-import { useState } from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import { AuthContext } from "../context/auth-context";
+import { toast } from "react-toastify";
 
 const Home = () => {
     const [organizations, setOrganizations] = useState([]);
     const [loading, setLoading] = useState(true);
+    const auth = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        auth.logout();
+        toast.success("You have successfully logged out!");
+        navigate("/login");
+    };
 
     useEffect(() => {
         const token = Cookies.get('token');
-        axios.get('https://tim9.smetkovodstvo.com/api/organizations', {
+        console.log("Token:", token);
+        axios.get("/organizations", {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -44,6 +55,9 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
+                <div className="text-center">
+                    <button onClick={handleLogout}>Logout</button>
+                </div>
 
                 <div className="container">
                     <div className="row">
@@ -55,13 +69,13 @@ const Home = () => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {organizations.map((term) => {
+                                {/* {organizations.map((term) => {
                                     return (
                                         <tr key={term.id}>
                                             <td>{term.name}</td>
                                         </tr>
                                     );
-                                })}
+                                })} */}
                                 </tbody>
                             </table>
                         </div>
