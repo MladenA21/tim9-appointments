@@ -1,11 +1,58 @@
 import './AddReservation.css'
 import logo from '../assets/logo.png'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'react-calendar/dist/Calendar.css';
+import axios from "axios";
+import { Link, useParams } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const AddReservation = () => {
+    const [formData, setFormData] = useState({
+        dateTime: '',
+        organization: '',
+    });
+
+    const [organizations, setOrganizations] = useState([]);
+    const [selectedOrganization, setSelectedOrganization] = useState(null);
+
+    useEffect(() => {
+        axios.get('/api/organizations')
+            .then((response) => {
+                console.log("Data:", response.data);
+                setOrganizations(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching organizations:", error);
+            });
+    }, []);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post('/api/reserve', {
+                organization: formData.organization,
+                dateTime: formData.dateTime,
+            });
+            window.location.href = '/';
+        } catch (error) {
+            console.error('Error adding reservation:', error);
+        }
+    };
+
+    const handleOrganizationChange = (e) => {
+        const selectedOrgId = e.target.value;
+        const selectedOrg = organizations.find(org => org.id === selectedOrgId);
+        setSelectedOrganization(selectedOrg);
+        setFormData({ ...formData, organization: selectedOrgId });
+    };
+
     return (
-        <div className="page-cont">
+        <div>
             <div className="top-cont">
                 <div className="container text-center p-4">
                     <div className='container w-50 mx-auto'>
@@ -16,36 +63,44 @@ const AddReservation = () => {
                     </div>
                 </div>
             </div>
-
             <div className="form-container">
-                <h2 className="title-form">reservation details</h2>
-                <form>
-                    <div className="form-group">
-                        <label htmlFor="date">date:</label>
-                        <input type="date" id="date" name="date" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="timeSlots">open time slots:</label>
-                        <select id="timeSlots" name="timeSlots">
-                            <option value="morning">Morning</option>
-                            <option value="afternoon">Afternoon</option>
-                            <option value="evening">Evening</option>
+                <h1>Add Reservation</h1>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label>Organization</label>
+                        <select
+                            name="organization"
+                            value={formData.organization}
+                            onChange={handleOrganizationChange}
+                            required
+                        >
+                            <option value="">Select Organization</option>
+                            {organizations.map((organization) => (
+                                <option key={organization.id} value={organization.id}>
+                                    {organization.name}
+                                </option>
+                            ))}
                         </select>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="type">type:</label>
-                        <select id="type" name="type">
-                            <option value="meeting">Meeting</option>
-                            <option value="workshop">Workshop</option>
-                            <option value="conference">Conference</option>
-                        </select>
+                    <div>
+                        <label>Working Days:</label>
+                        {selectedOrganization && (
+                            <h5>{selectedOrganization.name}</h5>
+                        )}
                     </div>
-                    <div className="button-cont">
-                        <button type="submit" className="custom-btn">reserve</button>
+                    <div>
+                        <label>Date and Time:</label>
+                        <input
+                            type="datetime-local"
+                            name="dateTime"
+                            value={formData.dateTime}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
+                    <button type="submit">Submit</button>
                 </form>
             </div>
-
         </div>
     );
 }

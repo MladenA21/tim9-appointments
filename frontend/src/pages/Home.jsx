@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import {Link} from "react-router-dom";
 
 const Home = () => {
     const [organizations, setOrganizations] = useState([]);
@@ -12,11 +13,7 @@ const Home = () => {
 
     useEffect(() => {
         const token = Cookies.get('token');
-        axios.get('https://tim9.smetkovodstvo.com/api/organizations', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
+        axios.get('/api/organizations')
             .then((response) => {
                 console.log("Data:", response.data);
                 setOrganizations(response.data);
@@ -52,6 +49,9 @@ const Home = () => {
                                 <thead>
                                 <tr>
                                     <th scope={"col"}>Name</th>
+                                    <th scope={"col"}>Working days</th>
+                                    <th scope={"col"}>Working hours</th>
+                                    <th scope={"col"}>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -59,6 +59,9 @@ const Home = () => {
                                     return (
                                         <tr key={term.id}>
                                             <td>{term.name}</td>
+                                            <td>{term.days}</td>
+                                            <td>{term.time_from} - {term.time_to}</td>
+                                            <td><Link className={"d-block btn btn-outline-primary my-2"} to={`/reservations/${term.id}`}>View organization</Link></td>
                                         </tr>
                                     );
                                 })}

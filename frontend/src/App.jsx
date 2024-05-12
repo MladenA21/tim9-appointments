@@ -17,7 +17,7 @@ function App() {
 
     useEffect(() => {
         axios.post('/api/login', {
-            email: "org@tim9.co",
+            email: "user@tim9.co",
             password: "asdasd123"
         }).then((res) => {
             console.log(res);
@@ -36,7 +36,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
             )}
             <Route path="/register" element={<Register />} />
-            <Route path="/reservation" element={<Reservation />} />
+            <Route path="/reservations/:id" element={<Reservation />} />
             <Route path="/reserve" element={<AddReservation />} />
         </Routes>
     );

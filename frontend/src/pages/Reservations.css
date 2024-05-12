@@ -1,0 +1,72 @@
+.top-cont{
+    background-color: #cac4ce;
+}
+
+.add-btn {
+    width: 400px;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #2f3234;
+    color: #ffffff;
+    border: none;
+    font-family: Arial, sans-serif;
+}
+
+.add-btn:hover {
+    background-color: #6c596e;
+    color: #ffffff;
+}
+
+.logo {
+    width: 20%;
+    height: 20%;
+}
+
+.name-col {
+    color: #68586c;
+    margin-left: -120px;
+}
+
+.logo-row {
+    margin-left: -120px;
+}
+
+.organization-name {
+    font-size: 40px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    color: #6c596e;
+    padding: 0;
+}
+
+.reservation-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
+}
+
+.reservation-table {
+    width: 80%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+}
+
+.reservation-table tr.reserved {
+    background-color: #ffcccc;
+}
+
+.reservation-table tr.not-reserved {
+    background-color: #f2f2f2;
+}
+
+.reservation-table th, .reservation-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.reservation-table th {
+    background-color: #2f3234;
+    color: #ffffff;
+}
