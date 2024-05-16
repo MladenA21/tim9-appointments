@@ -33,6 +33,9 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::delete('/organization/{id}/reservations/{reservation_id}',   [ReservationsController::class, 'destroy']);
     Route::post('reserve',                                              [ReservationsController::class, 'reserve']);
 
+    Route::post('/organization/{id}/free-time-slots',                   [ReservationsController::class, 'free_slots_of_the_day']);
+    Route::post('/organization/{id}/reservations-for-the-day',          [ReservationsController::class, 'reservations_for_the_day']);
+
     Route::get('organizations', [UsersController::class, 'all_organizations']);
 });
 

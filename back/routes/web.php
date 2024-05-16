@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Reservation;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    dd(Carbon::parse(Reservation::first()->dateTime)->format('Y-m-d H'));
     return view('welcome');
 });

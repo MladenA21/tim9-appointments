@@ -52,7 +52,7 @@ class AuthController extends Controller
         $success['token'] =  $user->createToken('auth_token')->plainTextToken;
         $success['name'] =  $user->name;
 
-        return response()->json($success, 200)->withCookie(Cookie::make("auth_token", $success['token'], 60 * 60 * 8));;
+        return response()->json($user, 200)->withCookie(Cookie::make("auth_token", $success['token'], 60 * 60 * 8));
     }
 
     /**
@@ -72,7 +72,7 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
             $success['name'] =  $user->name;
             $success['success'] =  true;
-            return response()->json($success, 200)
+            return response()->json($user, 200)
             ->withCookie(Cookie::make("auth_token", $token, 60 * 60 * 8));
         } else {
             return response()->json(['message' => 'Unauthorized'], 401);
