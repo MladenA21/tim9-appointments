@@ -1,4 +1,19 @@
-body{
-    background-color: #c4c4ce;
-    font-family: Allerta;
+body {
+  background-color: #c4c4ce;
+  font-family: Allerta;
+}
+.auth-button{
+    background-color: #6c596e;
+}
+
+.auth-button:hover {
+  background-color: #2f3234;
+}
+
+.redirecting-button {
+  text-decoration: none;
+}
+
+.redirecting-button:hover {
+  text-decoration: underline;
 }

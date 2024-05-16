@@ -2,7 +2,7 @@
     background-color: #cac4ce;
 }
 
-.add-btn {
+.back-btn {
     width: 400px;
     margin-top: 20px;
     padding: 10px;
@@ -12,7 +12,7 @@
     font-family: Arial, sans-serif;
 }
 
-.add-btn:hover {
+.back-btn:hover {
     background-color: #6c596e;
     color: #ffffff;
 }
@@ -37,6 +37,10 @@
     font-weight: bold;
     color: #6c596e;
     padding: 0;
+}
+
+.calendar-container {
+    margin-top: 50px;
 }
 
 .reservation-dot {

@@ -1,15 +1,17 @@
 import './Reservations.css';
 import logo from '../assets/logo.png'
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import axios from "axios";
 import Cookies from 'js-cookie';
 import {Link, useParams} from "react-router-dom";
+import { AuthContext } from '../context/auth-context';
 
 
 function Reservation() {
     const [date, setDate] = useState(new Date());
+    const { userType, userId } = useContext(AuthContext);
 
     const onChange = (newDate) => {
         setDate(newDate);
@@ -53,12 +55,20 @@ function Reservation() {
                     <div className='container w-50 mx-auto'>
                         <div className='w-75 mx-auto' style={{ fontFamily: "Madimi One", color: "#6c596e", fontSize: "4rem" }}>
                             <img className='mx-3' src={logo} alt="logo" style={{ width: "70px" }} />
-                            Reserfivy
+                            Reservify
                         </div>
                     </div>
+
                     <div className="row justify-content-center p-2">
                         <div className="col-auto">
-                            <Link className="btn add-btn" to={`/reserve`}>add reservation</Link>
+                            {userType === 'organization' ? (
+                                <button className="btn back-btn" onClick={() => {
+                                    Cookies.remove('token');
+                                    window.location.href = '/login';
+                                }}>Log Out</button>
+                            ) : (
+                                <Link className="btn back-btn" to={`/`}>Back to Home</Link>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -70,8 +80,8 @@ function Reservation() {
             </div>
             <div className="text-center mt-4">
                 <div className="row">
-                    <div className="col-5 offset-1">
-                        <div className="calendar-container d-flex justify-content-center align-items-center">
+                    <div className="col-5 offset-1 calendar-container">
+                        <div className="d-flex justify-content-center align-items-center">
                             <Calendar
                                 className="centered-calendar"
                                 onChange={onChange}

@@ -23,9 +23,9 @@
 
 .title-form {
     text-align: center;
-    padding-bottom: 20px;
-    font-family: "Amaranth", serif;
-    font-size: 3rem;
+    padding-bottom: 30px;
+    font-family: Arial, sans-serif;
+    font-size: 35px;
     color: #2f3234;
     
 }
@@ -37,13 +37,14 @@
 
 label {
     margin-right: 10px;
+    text-align: left;
     flex: 1;
-    font-family: "Amaranth", serif;
-    font-size: 2rem;
+    font-family: Arial, sans-serif;
+    font-size: 25px;
     color: #2f3234;
 }
 
-input[type="date"],
+input[type="datetime-local"],
 select {
     flex: 2;
     padding: 10px;
@@ -60,17 +61,32 @@ select {
     padding: 20px;
 }
 
-.custom-btn {
-    width: 250px;
+.bck-btn {
+    width: 400px;
+    margin-right: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    color: #2f3234;
+    border: 1px solid #2f3234;
+    font-family: Arial, sans-serif;
+}
+
+.bck-btn:hover {
+    background-color: #2f3234;
+    color: #ffffff;
+}
+
+.submit-btn {
+    width: 440px;
     padding: 10px;
     background-color: #2f3234;
     color: #ffffff;
     border: none;
     border-radius: 5px;
-    font-family: "Allerta";
+    font-family: Arial, sans-serif;
 }
 
-.custom-btn:hover {
+.submit-btn:hover {
     background-color: #6c596e;
     color: #ffffff;
 }
