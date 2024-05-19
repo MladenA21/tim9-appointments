@@ -31,6 +31,8 @@ const Register = () => {
     if (data.days) {
       data.days = Array.from(formData.getAll('days'));
     }
+    data.days = JSON.stringify(data.days);
+    console.log(data.days);
 
     try {
       setIsLoading(true);
@@ -66,6 +68,7 @@ const Register = () => {
       // navigate('/');
       // added by Angela
       auth.login(resData.token, resData.type, resData.id);
+      console.log(resData);
 
       if (resData.type === 'organization'){
         navigate(`/reservations/${resData.id}`);
