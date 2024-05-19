@@ -30,6 +30,8 @@ const Register = () => {
     const data = Object.fromEntries(formData.entries());
     if (data.days) {
       data.days = Array.from(formData.getAll('days'));
+    } else {
+      data.days = [];
     }
     data.days = JSON.stringify(data.days);
     console.log(data.days);
